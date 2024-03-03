@@ -23,7 +23,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
     <a href="#" class="w3-bar-item w3-button w3-padding-large w3-white">Home</a>
     <a href="#About" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">About</a>
     <a href="#Applications" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Applications</a>
-    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Link 3</a>
+    <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Summarize</a>
     <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Link 4</a>
   </div>
 
@@ -31,7 +31,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
   <div id="navDemo" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium w3-large">
     <a href="#" class="w3-bar-item w3-button w3-padding-large">About</a>
     <a href="#" class="w3-bar-item w3-button w3-padding-large">Applications</a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 3</a>
+    <a href="#" class="w3-bar-item w3-button w3-padding-large">Summarize</a>
     <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 4</a>
   </div>
 </div>
@@ -40,7 +40,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <header class="w3-container w3-red w3-center" style="padding:128px 16px">
   <h1 class="w3-margin w3-jumbo">RECAPIFY</h1>
   <p class="w3-xlarge">By Rachel Appenzeller, Marina Braga and Alexandra Klimko</p>
-  <a href="record-button"><button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Record Class</button></a>
+  <a href="record-button"><button class="w3-button w3-black w3-padding-large w3-large w3-margin-top">Start Recapify</button></a>
 </header>
 
 <!-- First Grid -->
@@ -58,8 +58,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
       </p>
     </div>
 
-    <div class="w3-third w3-center">
-      <img src="{{ url_for('static', filename='Board.jpg') }}" alt="Black board" style="width:100px;height:100px;">
+    <div class="w3-third w3-right">
+      <img src="{{ url_for('static', filename='Board.png') }}" alt="Black board" style="width:400px;height:200px;">
     </div>
   </div>
 </div>
@@ -68,7 +68,7 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <div id="Applications" class="w3-row-padding w3-light-grey w3-padding-64 w3-container">
   <div class="w3-content">
     <div class="w3-third w3-center">
-      <img src="{{ url_for('static', filename='Scroll.jpg') }}" alt="Scroll" style="width:100px;height:100px;">
+      <img src="{{ url_for('static', filename='Scroll.png') }}" alt="Scroll" style="width:300px;height:300px;">
     </div>
 
     <div class="w3-twothird">
@@ -91,12 +91,8 @@ body,h1,h2,h3,h4,h5,h6 {font-family: "Lato", sans-serif}
 <!-- Footer -->
 <footer class="w3-container w3-padding-64 w3-center w3-opacity">  
   <div class="w3-xlarge w3-padding-32">
-    <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
+    <a href="https://www.instagram.com/athena_hacks?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="><i class="fa fa-instagram w3-hover-opacity"></i></a>
+    <a href="https://www.linkedin.com/company/athenahacks/"><i class="fa fa-linkedin w3-hover-opacity"></i></a>
  </div>
  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
 </footer>
