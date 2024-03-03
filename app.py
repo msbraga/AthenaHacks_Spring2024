@@ -6,6 +6,7 @@ from wtforms import FileField, SubmitField
 from werkzeug.utils import secure_filename
 import os
 import wave
+import shutil
 
 
 
@@ -19,7 +20,7 @@ ACCOUNT_ID = "e400b2d016c3520024ca92809e6e9f4d"
 
 
 
-def split_wav(input_file, output_dir, chunk_length_seconds=10):
+def split_wav(input_file, output_dir, chunk_length_seconds):
     """Splits a WAV file into chunks of a specified length in seconds.
 
     Args:
@@ -49,7 +50,7 @@ def split_wav(input_file, output_dir, chunk_length_seconds=10):
             end_frame = (i + 1) * (frame_rate * chunk_length_seconds)
 
             # Open the output file.
-            output_file_path = os.path.join(output_dir, f"chunk_{i}.wav")
+            output_file_path = os.path.join(output_dir, f"{i}.wav")
             with wave.open(output_file_path, "wb") as output_file:
                 # Set the parameters of the output file.
                 output_file.setparams(input_file.getparams())
@@ -61,7 +62,7 @@ def split_wav(input_file, output_dir, chunk_length_seconds=10):
         if remainder_frames > 0:
             start_frame = num_chunks * (frame_rate * chunk_length_seconds)
             end_frame = num_frames
-            output_file_path = os.path.join(output_dir, f"chunk_{num_chunks}.wav")
+            output_file_path = os.path.join(output_dir, f"{num_chunks}.wav")
             with wave.open(output_file_path, "wb") as output_file:
                 output_file.setparams(input_file.getparams())
                 output_file.writeframes(input_file.readframes(end_frame - start_frame))
@@ -82,7 +83,8 @@ def record_button():
         file = form.file.data
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename)))
         transcript = get_text(file.filename)
-        return transcript
+        summary = summarize_text(transcript)
+        return render_template("output.html", transcript = transcript, summary = summary)
 
     return render_template("InsertFile_Page.html", form = form)
 
@@ -90,12 +92,12 @@ def record_button():
 def get_text(filename):
     #first let's send a request with our sound file to the API
 
-    split_wav("./audio/"+filename, "output_dir", chunk_length_seconds=10)
+    split_wav("./audio/"+filename, "output_dir", 30)
 
     string = ""
 
-    for filename in os.listdir("output_dir"):
-        filepath = os.path.join("output_dir", filename)
+    for i in range(100):
+        filepath = os.path.join("output_dir", f"{i}.wav")
         if os.path.isfile(filepath):
 
             url = "https://api.cloudflare.com/client/v4/accounts/" + ACCOUNT_ID +"/ai/run/@cf/openai/whisper"
@@ -111,16 +113,17 @@ def get_text(filename):
 
             response = requests.request("POST", url, data=payload, headers=headers)
 
-            #print(response.text)
+            print("response status code" + str(response.status_code))
 
             data = json.loads(response.text)
 
             #print(data['result']['text'])
             if (response.status_code == 200):
-                string += data['result']['text']
+                string += data['result']['text'] + " "
 
         
-        
+    
+    shutil.rmtree("output_dir")
     return string
 
   
@@ -133,7 +136,7 @@ def summarize_text(string):
 
     payload = {
         "input_text": "\""+ string + "\"",
-        "max_length": 1024
+        "max_length": 250
     }
     headers = {
         "Content-Type": "application/json",
@@ -142,7 +145,10 @@ def summarize_text(string):
 
     response = requests.request("POST", url, json=payload, headers=headers)
 
-    print(response.text)
+    data = json.loads(response.text)
+
+
+    return data['result']['summary']
 
 
 if __name__ == "__main__":
