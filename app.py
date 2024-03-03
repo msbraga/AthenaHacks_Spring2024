@@ -42,7 +42,7 @@ def get_text(filename):
 
     url = "https://api.cloudflare.com/client/v4/accounts/" + ACCOUNT_ID +"/ai/run/@cf/openai/whisper"
 
-    with open(filename, 'rb') as f:
+    with open("../audio/"+filename, 'rb') as f:
         payload = f.read()
 
     headers = {
