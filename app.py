@@ -1,17 +1,27 @@
 from flask import Flask, render_template
 import requests
 import json
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+
 
 app = Flask(__name__)
 
 API_TOKEN = "US_LOl-j5qoeGNOPOb4Et54RF6Ysc3i_COv1RP9m"
 ACCOUNT_ID = "e400b2d016c3520024ca92809e6e9f4d"
 
+class UploadForm(FlaskForm):
+    file = FileField("File")
+    submit = SubmitField("Submit")    
+
 
 @app.route("/")
 def home():    
     return render_template("website_main.html")
 
+@app.route("/record-button")
+def record_button():
+    return render_template("InsertFile_Page.html")
 
 
 def get_text():
