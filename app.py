@@ -83,7 +83,7 @@ def record_button():
         file = form.file.data
         file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename)))
         transcript = get_text(file.filename)
-        summary = summarize_text(transcript)
+        summary = summarize_with_gpt(transcript)
         return render_template("output.html", transcript = transcript, summary = summary)
 
     return render_template("InsertFile_Page.html", form = form)
@@ -151,5 +151,28 @@ def summarize_text(string):
     return data['result']['summary']
 
 
+
+def summarize_with_gpt(string):
+    url = "https://api.cloudflare.com/client/v4/accounts/"+ ACCOUNT_ID +"/ai/run/@cf/openchat/openchat-3.5-0106"
+
+    payload = {
+        "max_tokens": 256,
+        "prompt": "\""+ "Please summarize the following:"+ string + "\"",
+        "raw": False,
+        "stream": False
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + API_TOKEN
+    }
+
+    response = requests.request("POST", url, json=payload, headers=headers)
+
+    data = json.loads(response.text)
+
+
+    return data['result']['response']
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
