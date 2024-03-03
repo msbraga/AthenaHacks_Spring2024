@@ -3,10 +3,10 @@
 <html>
 	<body>
 
-		<form action=“https://examplesite.com/upload_handler.php” method=“post” enctype="multipart/form-data">
-			<input type="text" name="dogName"/><br/>  
-			<input type="file" name="dogPicture"/><br/>
-			<button type="submit">Upload</button>
+		<form method='POST' enctype="multipart/form-data">
+			{{form.hidden_tag()}}
+			{{form.file()}}
+			{{form.submit()}}
 		</form>
 	</body>
 </html>
