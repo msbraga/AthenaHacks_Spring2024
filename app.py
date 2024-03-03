@@ -9,9 +9,12 @@ import os
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret"
+app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'audio')
 
 API_TOKEN = "US_LOl-j5qoeGNOPOb4Et54RF6Ysc3i_COv1RP9m"
 ACCOUNT_ID = "e400b2d016c3520024ca92809e6e9f4d"
+
+
 
 class UploadForm(FlaskForm):
     file = FileField("File")
@@ -26,19 +29,20 @@ def home():
 def record_button():
     form = UploadForm()
     if form.validate_on_submit():
-        #file = form.file.data
-        #filename = secure_filename(file.filename)
-        #file.save(os.path.join("static", filename))
-        return "File Uploaded"
+        file = form.file.data
+        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename)))
+        transcript = get_text(file.filename)
+        return transcript
+
     return render_template("InsertFile_Page.html", form = form)
 
 
-def get_text():
+def get_text(filename):
     #first let's send a request with our sound file to the API
 
     url = "https://api.cloudflare.com/client/v4/accounts/" + ACCOUNT_ID +"/ai/run/@cf/openai/whisper"
 
-    with open('c.wav', 'rb') as f:
+    with open(filename, 'rb') as f:
         payload = f.read()
 
     headers = {
@@ -55,6 +59,8 @@ def get_text():
     print(data['result']['text'])
 
     string = data['result']['text']
+
+    return string
 
 
 def summarize_text(string):
@@ -77,4 +83,4 @@ def summarize_text(string):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
