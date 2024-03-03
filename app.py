@@ -15,9 +15,8 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "secret"
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), 'audio')
 
-API_TOKEN = "US_LOl-j5qoeGNOPOb4Et54RF6Ysc3i_COv1RP9m"
-ACCOUNT_ID = "e400b2d016c3520024ca92809e6e9f4d"
-
+#API_TOKEN = "YOUR TOKEN HERE"
+#ACCOUNT_ID = "YOUR ACCOUNT ID HERE"
 
 
 def split_wav(input_file, output_dir, chunk_length_seconds):
